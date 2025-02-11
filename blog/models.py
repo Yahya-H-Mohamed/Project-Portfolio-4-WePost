@@ -10,6 +10,12 @@ class Post(models.Model):
   created_on = models.DateTimeField(auto_now_add=True)
   edited = models.BooleanField(default=False)
 
+  def __str__(self):
+        return f"Post Title: {self.post_title}, Post Author: {self.author}"
+  
+  class Meta:
+      ordering = ["-created_on"]
+
 class Comment(models.Model):
   original_post = models.ForeignKey(
     Post, on_delete=models.CASCADE, related_name="post_comments")
@@ -18,3 +24,9 @@ class Comment(models.Model):
   content = models.TextField()
   created_on = models.DateTimeField(auto_now_add=True)
   edited = models.BooleanField(default=False)
+
+  def __str__(self):
+        return f"Comment: {self.content}, Comment Author: {self.author}"
+  
+  class Meta:
+      ordering = ["-created_on"]
