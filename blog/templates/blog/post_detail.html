@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+
+<!-- Post Container -->
+<div class="container mt-4">
+    <div class="card bg-dark text-light mb-4">
+        <!-- Card Header: Post Title, Author, and Date -->
+        <div class="card-header bg-secondary border-0">
+            <div class="d-flex align-items-center">
+                <h2 class="card-title mb-0">{{ post.post_title }}</h2>
+            </div>
+            <p class=" mb-0">
+                Posted by <strong>{{ post.author }}</strong> on {{ post.created_on }}
+            </p>
+        </div>
+
+        <!-- Card Body: Post Content -->
+        <div class="card-body">
+            <p class="card-text">
+                {{ post.content }}
+            </p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
