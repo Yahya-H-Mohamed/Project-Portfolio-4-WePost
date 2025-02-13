@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- my_posts.html content starts here -->
+<div class="container-fluid bg-dark">
+    <div class="row">
+
+      <h1 class="text-center text-white">My Posts</h1>
+
+      <!-- Blog Entries Column -->
+      <div class="col-8 mt-3 mx-auto">
+          <div class="row">
+              {% if posts %}
+                  {% for post in posts %}
+                  <div class="col-md-12">
+                      <a href="{% url 'post_detail' post.id %}" class="post-link">
+                          <div class="card mb-3 shadow-sm bg-light">
+                              <div class="card-body hover-bg-primary">
+                                  <div class="d-flex justify-content-between">
+                                      <div class="d-flex align-items-center">
+                                          <span><strong>{{ post.author }}</strong></span>
+                                      </div>
+                                      <div class="text-muted small">
+                                          <span>{{ post.created_on }}</span>
+                                      </div>
+                                  </div>
+                                  <h2 class="card-title mt-3">{{ post.post_title }}</h2>
+                                  <hr />
+                                  <p class="card-text">{{ post.content|truncatewords:50 }}...</p>
+                              </div>
+                          </div>
+                      </a>
+                  </div>
+                  {% endfor %}
+              {% else %}
+                  <p class="text-white text-center">You have not made any posts yet.</p>
+              {% endif %}
+          </div>
+      </div>
+    </div>
+
+    {% if is_paginated %}
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a href="?page={{ page_obj.previous_page_number }}" class="page-link">Previous</a>
+                </li>
+            {% endif %}
+            
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a href="?page={{ page_obj.next_page_number }}" class="page-link">Next</a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+</div>
+
+<!-- my_posts.html content ends here -->
+{% endblock %}

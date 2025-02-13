@@ -10,6 +10,15 @@ class PostList(generic.ListView):
     template_name = "blog/index.html"
     paginate_by = 5
 
+class MyPosts(generic.ListView):
+    model = Post
+    template_name = 'blog/my_posts.html'
+    paginate_by = 5
+    context_object_name = 'posts'  
+
+    def get_queryset(self):
+        return Post.objects.filter(author=self.request.user).order_by('-created_on')
+
 def post_detail(request, slug):
     post = get_object_or_404(Post, id=slug)
     comments = post.post_comments.all().order_by("-created_on")
