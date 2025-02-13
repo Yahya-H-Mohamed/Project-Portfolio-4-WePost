@@ -1,8 +1,8 @@
-from django.shortcuts import render, get_object_or_404, reverse
+from django.shortcuts import render, get_object_or_404, reverse, redirect
 from django.views import generic
 from django.http import HttpResponseRedirect
 from .models import Post, Comment
-from .form import CommentForm
+from .form import CommentForm, PostForm
 
 # Create your views here.
 class PostList(generic.ListView):
@@ -18,6 +18,19 @@ class MyPosts(generic.ListView):
 
     def get_queryset(self):
         return Post.objects.filter(author=self.request.user).order_by('-created_on')
+    
+def create_post(request):
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user  
+            post.save()
+            return redirect('my_posts')
+    else:
+        form = PostForm()
+    
+    return render(request, 'blog/create_post.html', {'form': form})
 
 def post_detail(request, slug):
     post = get_object_or_404(Post, id=slug)

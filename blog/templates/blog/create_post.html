@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <!-- create_post.html content starts here -->
+  <div class="container-fluid bg-dark">
+    <div class="row">
+      <h1 class="text-center text-white mt-3">Create a New Post</h1>
+
+      <!-- Form Column -->
+      <div class="col-8 mt-3 mx-auto">
+        <div class="row">
+          <div class="col-md-12">
+            <form method="POST">
+              {% csrf_token %}
+              <div class="card mb-3 shadow-sm bg-light">
+                <div class="card-body">
+                  <h2 class="card-title">Post Details</h2>
+
+                  <!-- Post Title -->
+                  <div class="mb-3">
+                    <label for="id_post_title" class="form-label">Post Title</label>
+                    {{ form.post_title }}
+                  </div>
+
+                  <!-- Post Content -->
+                  <div class="mb-3">
+                    <label for="id_content" class="form-label">Content</label>
+                    {{ form.content }}
+                  </div>
+
+                  <!-- Submit Button -->
+                  <div class="d-flex justify-content-center">
+                    <button type="submit" class="btn btn-lg mt-3 bg-warning">
+                        Post!
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- create_post.html content ends here -->
+{% endblock %}
