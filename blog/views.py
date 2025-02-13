@@ -30,7 +30,41 @@ def create_post(request):
     else:
         form = PostForm()
     
-    return render(request, 'blog/create_post.html', {'form': form})
+    return render(request,
+                  'blog/create_post.html',
+                  {'form': form})
+
+
+def post_edit(request, id):
+    """
+    View to edit a post
+    """
+    # Fetch the post object based on slug
+    post = get_object_or_404(Post, id=id)
+
+    # Ensure the user is the author of the post before they can edit
+    if request.user != post.author:
+        return HttpResponseRedirect(reverse('post_detail', args=[id]))
+
+    if request.method == "POST":
+        # Bind the form with POST data and the post instance
+        post_form = PostForm(request.POST, instance=post)
+
+        # Check if the form is valid
+        if post_form.is_valid():
+            post_form.save()  # Save the post with the updated data
+            return HttpResponseRedirect(reverse('post_detail', args=[id]))  # Redirect to post detail page
+
+    else:
+        # If GET request, initialize the form with the post instance
+        post_form = PostForm(instance=post)
+
+    return render(request, 'blog/edit_post.html', {
+        'post_form': post_form,
+        'post': post
+    })
+
+
 
 def post_detail(request, slug):
     post = get_object_or_404(Post, id=slug)
