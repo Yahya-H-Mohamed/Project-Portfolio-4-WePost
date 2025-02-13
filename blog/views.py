@@ -10,11 +10,12 @@ class PostList(generic.ListView):
 
 def post_detail(request, slug):
     queryset = Post.objects.all()
-    post = get_object_or_404(queryset, id=slug)
     post = get_object_or_404(Post, id=slug)
+    comments = post.post_comments.all().order_by("-created_on")
 
     return render(
         request,
         "blog/post_detail.html",
-        {"post": post},
+        {"post": post,
+         "comments": comments},
     )
