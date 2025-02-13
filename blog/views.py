@@ -11,7 +11,6 @@ class PostList(generic.ListView):
     paginate_by = 5
 
 def post_detail(request, slug):
-    queryset = Post.objects.all()
     post = get_object_or_404(Post, id=slug)
     comments = post.post_comments.all().order_by("-created_on")
 
@@ -32,3 +31,21 @@ def post_detail(request, slug):
          "comments": comments,
          "comment_form": comment_form,},
     )
+
+def comment_edit(request, slug, comment_id):
+    """
+    view to edit comments
+    """
+    if request.method == "POST":
+
+        post = get_object_or_404(Post, id=slug)
+        comment = get_object_or_404(Comment, pk=comment_id)
+        comment_form = CommentForm(data=request.POST, instance=comment)
+
+        if comment_form.is_valid() and comment.author == request.user:
+            comment = comment_form.save(commit=False)
+            comment.post = post
+            comment.edited = True
+            comment.save()
+
+    return HttpResponseRedirect(reverse('post_detail', args=[slug]))
