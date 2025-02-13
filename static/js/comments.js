@@ -1,7 +1,13 @@
+// Edit feature DOM elements
 const editButtons = document.getElementsByClassName("btn-edit");
 const commentText = document.getElementById("id_content");
 const commentForm = document.getElementById("commentForm");
 const submitButton = document.getElementById("submitButton");
+
+// Delete feature DOM elements
+const deleteModal = new bootstrap.Modal(document.getElementById("deleteModal"));
+const deleteButtons = document.getElementsByClassName("btn-delete");
+const deleteConfirm = document.getElementById("deleteConfirm");
 
 /**
 * Initializes edit functionality for the provided edit buttons.
@@ -15,16 +21,37 @@ const submitButton = document.getElementById("submitButton");
 */
 for (let button of editButtons) {
   button.addEventListener("click", (e) => {
+    console.log("Success")
     let commentId = e.target.getAttribute("comment_id");
-    console.log("success")
+    console.log("Success")
     let commentContent = document.getElementById(`comment${commentId}`).innerText;
-    console.log(commentContent)
-    console.log("success")
+    console.log("Success")
     commentText.value = commentContent;
-    console.log("success")
+    console.log("Success")
     submitButton.innerText = "Update";
-    console.log("success")
+    console.log("Success")
     commentForm.setAttribute("action", `edit_comment/${commentId}`);
-    console.log("success")
+  });
+}
+
+
+/**
+* Initializes deletion functionality for the provided delete buttons.
+* 
+* For each button in the `deleteButtons` collection:
+* - Retrieves the associated comment's ID upon click.
+* - Updates the `deleteConfirm` link's href to point to the 
+* deletion endpoint for the specific comment.
+* - Displays a confirmation modal (`deleteModal`) to prompt 
+* the user for confirmation before deletion.
+*/
+for (let button of deleteButtons) {
+  button.addEventListener("click", (e) => {
+    let commentId = e.target.getAttribute("comment_id");
+    console.log("Success")
+    deleteConfirm.href = `delete_comment/${commentId}`;
+    console.log("Success")
+    deleteModal.show();
+    console.log("Success")
   });
 }

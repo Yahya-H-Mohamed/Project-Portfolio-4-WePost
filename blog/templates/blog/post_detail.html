@@ -12,25 +12,28 @@
             <div class="d-flex align-items-center">
                 <h2 class="card-title mb-0">{{ post.post_title }}</h2>
             </div>
-            <p class=" mb-0">
+            <p class="mb-0">
                 Posted by <strong>{{ post.author }}</strong> on {{ post.created_on }}
+                {% if post.edited %}
+                    <span class="text-muted">(Edited)</span>
+                {% endif %}
             </p>
         </div>
-
-        <!-- Card Body: Post Content -->
         <div class="card-body bg-light mt-4">
             <p class="card-text text-dark">
                 {{ post.content }}
             </p>
         </div>
     </div>
+    
+    <!-- Comments Section -->
     <div class="container mt-4">
         <div class="card bg-dark text-light mb-4">
             <!-- Comments Header -->
             <div class="card-header bg-secondary border-0">
                 <h3 class="card-title mb-0">Comments:</h3>
             </div>
-    
+
             <!-- Creating New Comments Section -->
             <div class="card-body">
                 {% if user.is_authenticated %}
@@ -50,7 +53,7 @@
                 <p class="text-muted">Log in to leave a comment</p>
                 {% endif %}
             </div>
-    
+
             <!-- Displaying Comments Section -->
             <div class="card-body">
                 {% for comment in comments %}
@@ -61,22 +64,42 @@
                         </p>
                         <p class="font-weight-normal text-dark mb-0">
                             <span class="text-muted">{{ comment.created_on }}</span>
+                            {% if comment.edited %}
+                                <span class="text-muted">(Edited)</span>
+                            {% endif %}
                         </p>
                     </div>
                     <div id="comment{{ comment.id }}" class="text-dark">
                         {{ comment.content | linebreaks }}
                     </div>
                     {% if user.is_authenticated and comment.author == user %}
-                        <button class="btn btn-edit"
-                        comment_id="{{ comment.id }}">Edit</button>
+                        <button class="btn btn-delete" comment_id="{{ comment.id }}">Delete</button>
+                        <button class="btn btn-edit" comment_id="{{ comment.id }}">Edit</button>
                     {% endif %}
                 </div>
                 {% endfor %}
             </div>
         </div>
     </div>
-    
+</div>
+
+<!-- Delete confirmation modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLabel">WARNING!</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Deleting this cannot be reverted!
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <a id="deleteConfirm" href="#" class="btn btn-danger">Delete</a>
+      </div>
     </div>
+  </div>
 </div>
 
 {% endblock content %}

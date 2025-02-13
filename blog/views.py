@@ -49,3 +49,15 @@ def comment_edit(request, slug, comment_id):
             comment.save()
 
     return HttpResponseRedirect(reverse('post_detail', args=[slug]))
+
+def comment_delete(request, slug, comment_id):
+    """
+    view to delete comment
+    """
+    post = get_object_or_404(Post, id=slug)
+    comment = get_object_or_404(Comment, pk=comment_id)
+
+    if comment.author == request.user:
+        comment.delete()
+
+    return HttpResponseRedirect(reverse('post_detail', args=[slug]))
