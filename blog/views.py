@@ -4,11 +4,13 @@ from django.http import HttpResponseRedirect
 from .models import Post, Comment
 from .form import CommentForm, PostForm
 
+
 # Create your views here.
 class PostList(generic.ListView):
     model = Post
     template_name = "blog/index.html"
     paginate_by = 5
+
 
 class MyPosts(generic.ListView):
     model = Post
@@ -18,8 +20,12 @@ class MyPosts(generic.ListView):
 
     def get_queryset(self):
         return Post.objects.filter(author=self.request.user).order_by('-created_on')
-    
+
+
 def create_post(request):
+    """
+    view to create post
+    """
     if request.method == 'POST':
         form = PostForm(request.POST)
         if form.is_valid():
@@ -35,38 +41,10 @@ def create_post(request):
                   {'form': form})
 
 
-def post_edit(request, id):
-    """
-    View to edit a post
-    """
-    # Fetch the post object based on slug
-    post = get_object_or_404(Post, id=id)
-
-    # Ensure the user is the author of the post before they can edit
-    if request.user != post.author:
-        return HttpResponseRedirect(reverse('post_detail', args=[id]))
-
-    if request.method == "POST":
-        # Bind the form with POST data and the post instance
-        post_form = PostForm(request.POST, instance=post)
-
-        # Check if the form is valid
-        if post_form.is_valid():
-            post_form.save()  # Save the post with the updated data
-            return HttpResponseRedirect(reverse('post_detail', args=[id]))  # Redirect to post detail page
-
-    else:
-        # If GET request, initialize the form with the post instance
-        post_form = PostForm(instance=post)
-
-    return render(request, 'blog/edit_post.html', {
-        'post_form': post_form,
-        'post': post
-    })
-
-
-
 def post_detail(request, slug):
+    """
+    view to post details
+    """
     post = get_object_or_404(Post, id=slug)
     comments = post.post_comments.all().order_by("-created_on")
 
@@ -88,6 +66,7 @@ def post_detail(request, slug):
          "comment_form": comment_form,},
     )
 
+
 def comment_edit(request, slug, comment_id):
     """
     view to edit comments
@@ -105,6 +84,7 @@ def comment_edit(request, slug, comment_id):
             comment.save()
 
     return HttpResponseRedirect(reverse('post_detail', args=[slug]))
+
 
 def comment_delete(request, slug, comment_id):
     """

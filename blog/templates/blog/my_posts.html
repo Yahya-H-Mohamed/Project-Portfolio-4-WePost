@@ -4,6 +4,18 @@
 
 <!-- my_posts.html content starts here -->
 <div class="container-fluid bg-dark">
+    <!-- Display messages -->
+    {% if messages %}
+        <div class="container mt-3">
+            {% for message in messages %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>{{ message }}</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
     <div class="row">
 
       <h1 class="text-center text-white">My Posts</h1>
