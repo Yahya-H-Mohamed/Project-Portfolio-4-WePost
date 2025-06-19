@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, reverse, redirect
 from django.views import generic
 from django.http import HttpResponseRedirect
-from .models import Post, Comment
+from .models import Post, Comment, CATEGORY_CHOICES
 from .form import CommentForm, PostForm
 
 
@@ -10,6 +10,19 @@ class PostList(generic.ListView):
     model = Post
     template_name = "blog/index.html"
     paginate_by = 5
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = CATEGORY_CHOICES
+        context['selected_category'] = self.request.GET.get('category', '')
+        return context
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        category = self.request.GET.get('category')
+        if category:
+            queryset = queryset.filter(category=category)
+        return queryset.order_by('-created_on')
 
 
 class MyPosts(generic.ListView):
