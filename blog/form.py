@@ -5,7 +5,7 @@ from django import forms
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['post_title', 'content']
+        fields = ['post_title', 'category', 'content']
     
     content = forms.CharField(widget=forms.Textarea(attrs={'rows': 3, 'class': 'form-control'}))
 
@@ -22,6 +22,3 @@ class CommentForm(forms.ModelForm):
             'rows': 3,
         })
     )
-
-
-

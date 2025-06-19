@@ -23,6 +23,7 @@
         <div class="card-header bg-secondary border-0">
             <div class="d-flex align-items-center">
                 <h2 class="card-title mb-0">{{ post.post_title }}</h2>
+                <span class="badge bg-warning ms-2">{{ post.get_category_display }}</span>
             </div>
             <p class="mb-0">
                 Posted by <strong>{{ post.author }}</strong> on {{ post.created_on }}
