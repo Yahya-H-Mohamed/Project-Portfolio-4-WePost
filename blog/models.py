@@ -1,6 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+CATEGORY_CHOICES = [
+    ('sports', 'Sports'),
+    ('entertainment', 'Entertainment'),
+    ('education', 'Education'),
+    ('technology', 'Technology'),
+    ('other', 'Other'),
+]
+
 # Create your models here.
 class Post(models.Model):
   post_title = models.CharField(max_length=200, unique=True)
@@ -9,6 +17,7 @@ class Post(models.Model):
   content = models.TextField()
   created_on = models.DateTimeField(auto_now_add=True)
   edited = models.BooleanField(default=False)
+  category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default='other')
 
   def __str__(self):
         return f"Post Title: {self.post_title}, Post Author: {self.author}"
