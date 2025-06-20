@@ -35,3 +35,12 @@ class TestBlogViews(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'blog/index.html')
         self.assertContains(response, 'A Test Post') # Check if post title is in the HTML
+    
+    def test_my_posts_view_redirects_if_not_logged_in(self):
+        """
+        Tests that an unauthenticated user is redirected from the 'My Posts' page.
+        """
+        self.client.logout() # Log out the user
+        response = self.client.get(reverse('my_posts'))
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, '/accounts/login/?next=/my_posts/')

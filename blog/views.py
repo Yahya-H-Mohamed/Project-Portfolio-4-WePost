@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, reverse, redirect
 from django.views import generic
 from django.http import HttpResponseRedirect
+from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Post, Comment, CATEGORY_CHOICES
 from .form import CommentForm, PostForm
 
@@ -25,7 +26,7 @@ class PostList(generic.ListView):
         return queryset.order_by('-created_on')
 
 
-class MyPosts(generic.ListView):
+class MyPosts(LoginRequiredMixin, generic.ListView):
     model = Post
     template_name = 'blog/my_posts.html'
     paginate_by = 5
