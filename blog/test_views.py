@@ -59,3 +59,15 @@ class TestBlogViews(TestCase):
         self.assertTemplateUsed(response, 'blog/my_posts.html')
         self.assertContains(response, self.post.post_title)
         self.assertNotContains(response, 'Another User Post')
+    
+    def test_create_post_view_post_request(self):
+        """
+        Tests creating a post via a POST request to the 'create_post' URL.
+        """
+        response = self.client.post(reverse('create_post'), {
+            'post_title': 'A New Post From Test',
+            'category': 'other',
+            'content': 'This is the content of the new post.'
+        })
+        self.assertRedirects(response, reverse('my_posts'))
+        self.assertTrue(Post.objects.filter(post_title='A New Post From Test').exists())
