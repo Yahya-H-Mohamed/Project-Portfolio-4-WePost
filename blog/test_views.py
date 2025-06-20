@@ -44,3 +44,18 @@ class TestBlogViews(TestCase):
         response = self.client.get(reverse('my_posts'))
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, '/accounts/login/?next=/my_posts/')
+    
+    def test_my_posts_view_shows_user_posts(self):
+        """
+        Tests that the 'my_posts' view shows only the logged-in user's posts.
+        """
+        Post.objects.create(
+            post_title='Another User Post',
+            author=self.other_user,
+            content='This should not be visible.'
+        )
+        response = self.client.get(reverse('my_posts'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'blog/my_posts.html')
+        self.assertContains(response, self.post.post_title)
+        self.assertNotContains(response, 'Another User Post')
