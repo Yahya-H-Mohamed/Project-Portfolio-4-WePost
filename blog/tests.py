@@ -19,3 +19,13 @@ class TestModels(TestCase):
             content='Some content for testing.',
             category='technology'
         )
+
+    def test_post_model_creation(self):
+        """
+        Test if Post is successfully made with valid data.
+        """
+        self.assertEqual(self.post.post_title, 'A Test Post')
+        self.assertEqual(self.post.author.username, 'testuser')
+        self.assertEqual(self.post.content, 'Some content for testing.')
+        self.assertEqual(self.post.category, 'technology')
+        self.assertFalse(self.post.edited) # Check the default value
