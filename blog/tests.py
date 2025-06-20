@@ -29,3 +29,10 @@ class TestModels(TestCase):
         self.assertEqual(self.post.content, 'Some content for testing.')
         self.assertEqual(self.post.category, 'technology')
         self.assertFalse(self.post.edited) # Check the default value
+    
+    def test_post_model_str_method(self):
+        """
+        Tests to see if the displayed string matches the post data.
+        """
+        expected_string = f"Post Title: {self.post.post_title}, Post Author: {self.user}"
+        self.assertEqual(str(self.post), expected_string)
