@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.test import TestCase, Client
-from .models import Post
+from .models import Post, Comment
 
 class TestBlogViews(TestCase):
 
@@ -23,6 +23,11 @@ class TestBlogViews(TestCase):
             author=self.user,
             content='Some content for testing.'
         )
+        self.comment = Comment.objects.create(
+                original_post=self.post,
+                author=self.user,
+                content='A test comment to display.'
+            )
         # Log in client for set up
         self.client.login(username='testuser', password='testpassword')
 
@@ -71,3 +76,14 @@ class TestBlogViews(TestCase):
         })
         self.assertRedirects(response, reverse('my_posts'))
         self.assertTrue(Post.objects.filter(post_title='A New Post From Test').exists())
+    
+    def test_post_detail_view(self):
+        """
+        Tests the detail view for a single post using the 'post_detail' URL.
+        """
+        url = reverse('post_detail', args=[self.post.id])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.post.post_title)
+        self.assertContains(response, self.post.content)
+        self.assertContains(response, self.comment.content)
