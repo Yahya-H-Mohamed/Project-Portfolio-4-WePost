@@ -20,7 +20,8 @@ Welcome to WePost! A Django community/blog social media application where people
 - With these as a guideline I went about implementing each user story, however due to running out of time, I was unable to completely finish the edit and delete functionality of the posts, so I had to scale my project down slightly to fit the deadline.
 
 - Wireframe
-![Page Blueprint](image-url)
+
+![Page Blueprint](images/Screenshot%20(36).png)
 
 - The Post Details page displays the full content of a single post, including its title, body, author, and any associated comments or interactions. Users may be able to comment, like, or interact with the post from this page.
 - The My Posts page shows a personalized list of posts created by the currently logged-in user. Users can view, edit, or delete their own posts from this page.
