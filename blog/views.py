@@ -58,7 +58,7 @@ def post_detail(request, slug):
     """
     view to post details
     """
-    post = get_object_or_404(Post, id=slug)
+    post = get_object_or_404(Post, slug=slug)
     comments = post.post_comments.all().order_by("-created_on")
 
     comment_form = CommentForm()
@@ -86,7 +86,7 @@ def comment_edit(request, slug, comment_id):
     """
     if request.method == "POST":
 
-        post = get_object_or_404(Post, id=slug)
+        post = get_object_or_404(Post, slug=slug)
         comment = get_object_or_404(Comment, pk=comment_id)
         comment_form = CommentForm(data=request.POST, instance=comment)
 
@@ -103,7 +103,7 @@ def comment_delete(request, slug, comment_id):
     """
     view to delete comment
     """
-    post = get_object_or_404(Post, id=slug)
+    post = get_object_or_404(Post, slug=slug)
     comment = get_object_or_404(Comment, pk=comment_id)
 
     if comment.author == request.user:
