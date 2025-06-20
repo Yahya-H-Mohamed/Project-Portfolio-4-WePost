@@ -36,3 +36,30 @@ class TestModels(TestCase):
         """
         expected_string = f"Post Title: {self.post.post_title}, Post Author: {self.user}"
         self.assertEqual(str(self.post), expected_string)
+
+    def test_comment_model_creation(self):
+        """
+        Tests if Comment is successfully made with valid data.
+        """
+        comment = Comment.objects.create(
+            original_post=self.post,
+            author=self.user,
+            content='This is a test comment.'
+        )
+        self.assertEqual(comment.original_post.post_title, 'A Test Post')
+        self.assertEqual(comment.author.username, 'testuser')
+        self.assertEqual(comment.content, 'This is a test comment.')
+        self.assertFalse(comment.edited)
+        self.assertEqual(self.post.post_comments.count(), 1)
+
+    def test_comment_model_str_method(self):
+        """
+        Tests to see if the displayed string matches the comment data.
+        """
+        comment = Comment.objects.create(
+            original_post=self.post,
+            author=self.user,
+            content='Another test comment.'
+        )
+        expected_string = f"Comment: {comment.content}, Comment Author: {self.user}"
+        self.assertEqual(str(comment), expected_string)
