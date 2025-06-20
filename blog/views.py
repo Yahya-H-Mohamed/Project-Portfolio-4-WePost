@@ -54,11 +54,11 @@ def create_post(request):
                   {'form': form})
 
 
-def post_detail(request, slug):
+def post_detail(request, post_id):
     """
     view to post details
     """
-    post = get_object_or_404(Post, slug=slug)
+    post = get_object_or_404(Post, id=post_id)
     comments = post.post_comments.all().order_by("-created_on")
 
     comment_form = CommentForm()
@@ -80,13 +80,13 @@ def post_detail(request, slug):
     )
 
 
-def comment_edit(request, slug, comment_id):
+def comment_edit(request, post_id, comment_id):
     """
     view to edit comments
     """
     if request.method == "POST":
 
-        post = get_object_or_404(Post, slug=slug)
+        post = get_object_or_404(Post, id=post_id)
         comment = get_object_or_404(Comment, pk=comment_id)
         comment_form = CommentForm(data=request.POST, instance=comment)
 
@@ -99,11 +99,11 @@ def comment_edit(request, slug, comment_id):
     return HttpResponseRedirect(reverse('post_detail', args=[slug]))
 
 
-def comment_delete(request, slug, comment_id):
+def comment_delete(request, post_id, comment_id):
     """
     view to delete comment
     """
-    post = get_object_or_404(Post, slug=slug)
+    post = get_object_or_404(Post, id=post_id)
     comment = get_object_or_404(Comment, pk=comment_id)
 
     if comment.author == request.user:
