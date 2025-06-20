@@ -19,6 +19,16 @@ Welcome to WePost! A Django community/blog social media application where people
 
 - With these as a guideline I went about implementing each user story, however due to running out of time, I was unable to completely finish the edit and delete functionality of the posts, so I had to scale my project down slightly to fit the deadline.
 
+- Wireframe
+![Page Blueprint](image-url)
+
+- The Post Details page displays the full content of a single post, including its title, body, author, and any associated comments or interactions. Users may be able to comment, like, or interact with the post from this page.
+- The My Posts page shows a personalized list of posts created by the currently logged-in user. Users can view, edit, or delete their own posts from this page.
+- The All Posts page displays a feed or list of all posts created by users on the platform. Visitors can browse, read, and possibly interact with posts from all users.
+- The Sign Up page allows new users to create an account by providing required information such as username, email, and password. Upon successful registration, users can log in and access the platform’s features.
+- The Sign In page enables existing users to log into their accounts using their credentials (typically username/email and password). Successful authentication grants access to user-specific and general features of the site.
+- The Create Posts page provides a form for users to compose and submit new posts. Users can enter content (such as title, content, category, etc.), and upon submission, the post is added to the platform and visible to others.
+
 ## How To Use
 - Users who are not logged in still have access to the app content and can read posts
 - Users who are new to the site are able to freely create and account with a secure username and password
@@ -53,21 +63,77 @@ Welcome to WePost! A Django community/blog social media application where people
 
 ## Testing
 The tests I have carried out on this project are:
-- I have verified that the blog post detail page is rendered correctly with unit testing
-- I have verified that the form codes behave as expected when valid and invalid data is submitted using unit testing
-- I have entered different inputs for all scenarios to ensure I have caught all potential input errors
 - I have passed my code through validators with no major errors
 - Run and tested my code in the local terminal
 - Run and tested my code in the Heroku terminal
 
+As for automated testing, I ran automated tests on the views and forms files.
+- test_post_list_view_get: Checks that the home page correctly displays a list of posts.
+- test_my_posts_view_redirects_if_not_logged_in: Ensures unauthenticated users are redirected from the "My Posts" page.
+- test_my_posts_view_shows_user_posts: Verifies that only the logged-in user's posts are shown on the "My Posts" page.
+- test_create_post_view_post_request: Tests that a user can create a new post via the create post form.
+- test_post_detail_view: Confirms that the post detail page displays the correct post and its comments.
+
+- test_post_form_is_valid: Checks that the post form is valid with correct data.
+- test_post_form_is_invalid_if_title_missing: Ensures the post form is invalid if the title is missing.
+- test_comment_form_is_valid: Checks that the comment form is valid with correct data.
+- test_comment_form_is_invalid_if_content_missing: Ensures the comment form is invalid if the content is missing.
+
+- Clicking edit button populates form and changes submit button: Simulates clicking the edit button and checks that the comment form is populated, the submit button text changes to "Update", and the form action is set correctly.
+
+
+
 ## Local Deployment
-- Steps for deployment: 
-- - Fork or Clone this repository
-- - Create a virtual environment
-- - Install all of the packages required
-- - Migrate databases
-- - Run command python3 manage.py runserver
-- - Open application in localhost browser
+Steps for local deployment: 
+- Fork or Clone this repository
+
+Git clone https://github.com/Yahya-H-Mohamed/Project-Portfolio-4-WePost
+
+- Create a virtual environment
+
+python -m venv venv
+
+- Install dependencies
+
+pip install -r requirements.txt
+
+- Apply migrations
+
+python manage.py migrate
+
+- Collect static files
+
+python manage.py collectstatic
+
+- Run the development server
+
+python manage.py runserver
+
+Steps for Heroku deployment: 
+- Create new heroku app
+
+heroku create (app-name)
+
+- Set environment variables on Heroku
+
+heroku config:set SECRET_KEY=<your-secret-key>
+heroku config:set ALLOWED_HOSTS=<your-app-name>.herokuapp.com
+
+- Push code to Heroku
+
+git push heroku main
+
+- Run migrations on Heroku
+
+heroku run python manage.py migrate
+
+- Collect static files on Heroku
+
+heroku run python manage.py collectstatic --noinput
+
+- Open deployed app
+
+  heroku open
 
 ## Credits
 - Reddit for some styling inspiration for the post cards
